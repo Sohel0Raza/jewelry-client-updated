@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.active {
+  @apply font-medium tracking-wider text-base p-2 text-[#CCAF77] md:border-b-2 border-[#CCAF77]
+}
+
+.default {
+  @apply font-medium tracking-wider text-base p-2 text-[#3c3a4f] hover:transition hover:duration-700 hover:delay-100 hover:ease-in-out hover:rounded-tl-2xl hover:rounded-br-2xl hover:text-white hover:bg-[#CCAF77]
+}
+
+.input-field {
+  @apply p-3 shadow-xl outline-none border-l-4 my-2 rounded-l-md border-[#CCAF77] focus:border-[#CCAF77] focus:rounded-none focus:outline-none focus:border-b-2 focus:border-l-0
+}
+.btn-primary{
+  @apply py-2 text-lg bg-[#CCAF77] hover:bg-[#a2864e] text-white 
+}
+.btn-secondary{
+  @apply py-2 text-lg bg-[#832729] hover:bg-[#621b1c] text-white
+}
+.btn-detail{
+ @apply rounded font-medium hover:text-white hover:bg-[#a2864e] border-[1px] border-[#832729] hover:border-transparent px-3 py-2
+}
+.btn-buy{
+ @apply rounded font-medium text-white bg-[#832729] hover:bg-[#561718] border-[1px] border-[#832729] hover:border-transparent px-3 py-2
+}
