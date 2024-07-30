@@ -78,7 +78,7 @@ const Navbar = () => {
                     {user ? (
                         <>
                             <div className="flex justify-between items-center">
-                                <div className="h-7 w-7 mr-3 tooltip tooltip-left tooltip-warning"
+                                <div className="h-7 w-7 mr-3 tooltip tooltip-left tooltip-info"
                                     data-tip={user.displayName}>
                                     <img
                                         className="h-full w-full rounded-full"
