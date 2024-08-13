@@ -5,10 +5,11 @@ import useAllJewelry from "../../hooks/useAllJewelry";
 import Title from "../../components/Title";
 import MyJewelry from "./MyJewelry";
 import { Link } from "react-router-dom";
+
 const MyJewelrys = () => {
     const { user } = useContext(AuthContext);
     const [allJewelry] = useAllJewelry()
-    const myJewelry = allJewelry?.filter(item => item.sellerEmail == user?.email)
+    const myJewelry = allJewelry?.filter(jewelry => jewelry.sellerEmail == user?.email)
     return (
         <div className="pt-24 md:mx-20">
             <Title heading={"My Jewelry"}></Title>

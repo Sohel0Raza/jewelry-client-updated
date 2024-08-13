@@ -1,25 +1,16 @@
 import { useContext } from "react";
-import line from "../../assets/banner/Line-Design.svg";
 import { AuthContext } from "../../providers/AuthProvider";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import AddCategory from "./AddCategory";
 import Title from "../../components/Title";
-
-export const CategoryEnum = {
-  Necklaces: "Necklaces",
-  Rings: "Rings",
-  Bracelets: "Bracelets",
-  Earrings: "Earrings",
-  Chain: "Chain",
-  NosePins: "Nose Pins",
-  Anklets: "Anklets",
-  Brooches: "Brooches",
-  Watches: "Watches",
-};
+import useCategory from "../../hooks/useCategory";
+import useAllJewelry from "../../hooks/useAllJewelry";
 
 const AddJewelry = () => {
   const { user } = useContext(AuthContext);
+  const [categories] = useCategory();
+  const [,loading, refetch] = useAllJewelry();
   const navigate = useNavigate();
   const from = "/allJewelry";
 
@@ -33,12 +24,14 @@ const AddJewelry = () => {
     WhiteGold: "White Gold",
     RoseGold: "Rose Gold",
   };
+
   const handleAddJewelry = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
     const image = form.image.value;
     const material = form.material.value;
+    const categoryId = form.category.value;
     const weight = form.weight.value;
     const itemAvailability = form.itemAvailability.checked;
     const price = parseFloat(form.price.value);
@@ -49,6 +42,7 @@ const AddJewelry = () => {
       sellerName,
       sellerEmail,
       name,
+      categoryId,
       image,
       price,
       material,
@@ -66,15 +60,22 @@ const AddJewelry = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        if (data.insertedId) {
+        if (data._id) {
           Swal.fire({
             title: "Success!",
             text: "New Jewelry Added Successfully",
             icon: "success",
             confirmButtonText: "OK",
           });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `${data.message}`,
+          });
         }
+        loading
+        refetch();
         navigate(from, { replace: true });
       })
       .catch((error) => {
@@ -88,6 +89,7 @@ const AddJewelry = () => {
         }
       });
   };
+
   return (
     <div>
       <div className="pt-24 md:px-20 mb-10">
@@ -110,7 +112,6 @@ const AddJewelry = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="text"
                     name="name"
-                    required="required"
                   />
                 </div>
                 <div className="mb-4">
@@ -124,7 +125,6 @@ const AddJewelry = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="text"
                     name="image"
-                    required="required"
                   />
                 </div>
                 <div className="mb-4">
@@ -137,7 +137,6 @@ const AddJewelry = () => {
                   <select
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="material"
-                    required="required"
                   >
                     <option disabled selected value="">
                       Select Material
@@ -180,7 +179,6 @@ const AddJewelry = () => {
                     type="text"
                     name="weight"
                     placeholder="Weight Gram"
-                    required="required"
                   />
                 </div>
                 <div className="mb-4">
@@ -194,7 +192,6 @@ const AddJewelry = () => {
                     <input
                       type="checkbox"
                       className="form-checkbox h-5 w-5 text-blue-600"
-                      required="required"
                       name="itemAvailability"
                     />
                     <span className="ml-2 text-gray-700">In Stock</span>
@@ -202,6 +199,27 @@ const AddJewelry = () => {
                 </div>
               </div>
               <div className="w-full">
+                <div className="mb-4">
+                  <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="priority"
+                  >
+                    Cotegory:
+                  </label>
+                  <select
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    name="category"
+                  >
+                    <option disabled selected value="">
+                      Select Category
+                    </option>
+                    {categories?.map((category) => (
+                      <option key={category._id} value={category._id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div className="mb-4">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
@@ -213,7 +231,6 @@ const AddJewelry = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="number"
                     name="price"
-                    required="required"
                   />
                 </div>
                 <div className="mb-4">
@@ -228,7 +245,6 @@ const AddJewelry = () => {
                     type="email"
                     name="sellerEmail"
                     value={user?.email}
-                    required="required"
                   />
                 </div>
 
@@ -244,7 +260,6 @@ const AddJewelry = () => {
                     type="text"
                     name="sellerName"
                     value={user?.displayName}
-                    required="required"
                   />
                 </div>
                 <div className="mb-4">
@@ -257,7 +272,6 @@ const AddJewelry = () => {
                   <textarea
                     className="shadow appearance-none border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="description"
-                    required="required"
                   />
                 </div>
               </div>

@@ -1,19 +1,20 @@
 import { Link } from "react-router-dom";
-import { AiFillDelete,AiTwotoneEdit } from "react-icons/ai";
+import { AiFillDelete, AiTwotoneEdit } from "react-icons/ai";
 import Swal from "sweetalert2";
 import useAllJewelry from "../../hooks/useAllJewelry";
 
-const MyJewelry = ({ item ,index}) => {
-  const { _id, sellerName, name, category, price } = item;
-const [,,refetch] = useAllJewelry()
+const MyJewelry = ({ item, index }) => {
+  const { _id, sellerName, name, categoryId, price } = item;
+  const [, , refetch] = useAllJewelry();
+
   const handleDelete = (_id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -24,19 +25,20 @@ const [,,refetch] = useAllJewelry()
           .then((data) => {
             if (data.deletedCount > 0) {
               Swal.fire("Deleted!", "Your file has been deleted.", "success");
-             refetch()
             }
+            refetch();
           });
       }
     });
   };
+
   return (
     <tbody>
       <tr className="text-lg">
         <td>{index}</td>
         <td>{sellerName}</td>
         <td>{name}</td>
-        <td>{category}</td>
+        <td>{categoryId}</td>
         <td>$ {price}</td>
         <div className="space-x-4 mt-3">
           <Link to={`/updateJewelry/${_id}`}>

@@ -2,50 +2,24 @@ import { useEffect, useState } from "react";
 import AllCard from "../../components/AllCard";
 import Title from "../../components/Title";
 import useAllJewelry from "../../hooks/useAllJewelry";
-import { CategoryEnum } from "../addJewelry/AddJewelry";
+import useCategory from "../../hooks/useCategory";
+
 const AllJewelry = () => {
-  const categoryArray = Object.values(CategoryEnum).map((category) => ({
-    name: category,
-    isActive: false,
-  }));
+  const [categories, ctLoading] = useCategory();
+  const [allJewelry, loading, refetch] = useAllJewelry();
+  console.log("✌️refetch --->", refetch);
+  console.log("✌️allJewelry --->", allJewelry);
 
-  const [allJewelry, loading] = useAllJewelry();
-  const [jewelrys, setJewelrys] = useState(allJewelry);
-  const [categoryList, setCategoryList] = useState(categoryArray);
-  const [activeAll, setActiveAll] = useState(true);
+  const [activeCategoryId, setActiveCategoryId] = useState("");
 
+  const [jewelries, setJewelries] = useState(allJewelry);
   useEffect(() => {
-    setJewelrys(allJewelry);
+    setJewelries(allJewelry);
   }, [loading]);
 
-  const handelClickAll = () => {
-    setJewelrys(allJewelry);
+  console.log("✌️jewelries --->", jewelries);
 
-    const allCategory = categoryList?.map((item) => {
-      return item.isActive ? { ...item, isActive: false } : item;
-    });
-
-    setActiveAll(true);
-
-    setCategoryList(allCategory);
-  };
-
-  const filterItem = (category, activedIndex) => {
-    const updatedCategory = categoryList.map((category, index) => {
-      return index == activedIndex
-        ? { ...category, isActive: true }
-        : { ...category, isActive: false };
-    });
-
-    setActiveAll(false);
-
-    setCategoryList(updatedCategory);
-
-    const newItem = allJewelry?.filter((item) => item.category === category);
-    setJewelrys(newItem);
-  };
-
-  if (loading) {
+  if (loading || ctLoading) {
     return (
       <div className="relative">
         <div className="flex justify-center py-40">
@@ -60,6 +34,21 @@ const AllJewelry = () => {
       </div>
     );
   }
+
+  const handelFilter = (categoryId) => {
+    setActiveCategoryId(categoryId);
+
+    const jewelryByCategory = allJewelry?.filter(
+      (jewelry) => jewelry.categoryId == categoryId
+    );
+    setJewelries(jewelryByCategory);
+  };
+
+  const handelClickAll = () => {
+    setJewelries(allJewelry);
+    setActiveCategoryId("");
+  };
+
   return (
     <div className="pt-24 md:px-20 mb-10">
       <Title heading={"All Jewelry"}></Title>
@@ -67,16 +56,16 @@ const AllJewelry = () => {
         <button
           onClick={() => handelClickAll()}
           className={`md:mx-6 md:mb-7 ${
-            activeAll ? "text-[#bd2c2e]" : ""
+            activeCategoryId == "" ? "text-[#bd2c2e]" : ""
           }`}
         >
           All
         </button>
-        {categoryList?.map((category, index) => (
+        {categories?.map((category, index) => (
           <button
-            onClick={() => filterItem(category.name, index)}
+            onClick={() => handelFilter(category._id)}
             className={`md:mx-5 md:mb-7  ${
-              category.isActive ? "text-[#bd2c2e]" : ""
+              category._id == activeCategoryId ? "text-[#bd2c2e]" : ""
             }`}
             key={index}
           >
@@ -85,7 +74,7 @@ const AllJewelry = () => {
         ))}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10 px-10 md:px-0">
-        {jewelrys?.map((item) => (
+        {jewelries?.map((item) => (
           <AllCard key={item._id} item={item}></AllCard>
         ))}
       </div>

@@ -1,26 +1,35 @@
+import Swal from "sweetalert2";
 import Title from "../../components/Title";
 
 const AddCategory = () => {
   const handleAddCategory = (e) => {
     e.preventDefault();
     const form = e.target;
-    const category = form.category.value;
-    const newCategory = { category };
-    fatch("http://localhost:5000/", {
+    const name = form.category.value; 
+    const category = { name };
+
+    fetch("http://localhost:5000/api/categories", {
       method: "POST",
-      headers: { "content-type": "aplication/json" },
-      body: JSON.stringify(newCategory),
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify(category),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.insertedId) {
+        if (data._id) {
           Swal.fire({
             title: "Success!",
             text: "New Category Added Successfully",
             icon: "success",
             confirmButtonText: "OK",
           });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `${data.message}`,
+          });
         }
+        form.reset()
       })
       .catch((error) => {
         form.reset();
@@ -33,6 +42,7 @@ const AddCategory = () => {
         }
       });
   };
+
   return (
     <div className="my-12  md:px-20">
       <Title heading={"Add Category"}></Title>
