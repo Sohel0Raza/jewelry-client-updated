@@ -8,7 +8,7 @@ const useCategory = () => {
   } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/api/categories");
+      const res = await fetch("https://jewelry-shop-server-main.vercel.app/api/categories");
       return res.json();
     },
   });

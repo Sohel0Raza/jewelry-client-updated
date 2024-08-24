@@ -14,6 +14,7 @@ import Jewelry from "./pages/allJewelry/Jewelry";
 import MyJewelrys from "./pages/myJewelry/MyJewelrys";
 import UpdateJewelry from "./pages/myJewelry/UpdateJewelry";
 import ErrorPage from "./pages/errorPage/ErrorPage";
+import AddCategory from "./pages/addJewelry/AddCategory";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/addCategory",
+        element: (
+          <PrivateRoute>
+            <AddCategory />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/myJewelry",
         element: (
           <PrivateRoute>
@@ -56,7 +65,7 @@ const router = createBrowserRouter([
         element: <UpdateJewelry />,
         loader: async ({ params }) => {
           const response = await fetch(
-            `http://localhost:5000/api/jewelrys/${params.id}`
+            `https://jewelry-shop-server-main.vercel.app/api/jewelrys/${params.id}`
           );
           const data = await response.json();
           return data;

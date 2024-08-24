@@ -5,10 +5,10 @@ const AddCategory = () => {
   const handleAddCategory = (e) => {
     e.preventDefault();
     const form = e.target;
-    const name = form.category.value; 
+    const name = form.category.value;
     const category = { name };
 
-    fetch("http://localhost:5000/api/categories", {
+    fetch("https://jewelry-shop-server-main.vercel.app/api/categories", {
       method: "POST",
       headers: { "content-type": "application/json; charset=utf-8" },
       body: JSON.stringify(category),
@@ -29,7 +29,7 @@ const AddCategory = () => {
             text: `${data.message}`,
           });
         }
-        form.reset()
+        form.reset();
       })
       .catch((error) => {
         form.reset();
@@ -44,7 +44,7 @@ const AddCategory = () => {
   };
 
   return (
-    <div className="my-12  md:px-20">
+    <div className="pt-24 md:px-20 mb-10">
       <Title heading={"Add Category"}></Title>
       <div>
         <form

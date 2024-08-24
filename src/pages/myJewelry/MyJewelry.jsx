@@ -18,7 +18,7 @@ const MyJewelry = ({ item, index }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/api/jewelrys/${_id}`, {
+        fetch(`https://jewelry-shop-server-main.vercel.app/api/jewelrys/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())

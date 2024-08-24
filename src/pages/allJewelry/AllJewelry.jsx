@@ -6,9 +6,8 @@ import useCategory from "../../hooks/useCategory";
 
 const AllJewelry = () => {
   const [categories, ctLoading] = useCategory();
-  const [allJewelry, loading, refetch] = useAllJewelry();
-  console.log("✌️refetch --->", refetch);
-  console.log("✌️allJewelry --->", allJewelry);
+  const [allJewelry, loading] = useAllJewelry();
+  
 
   const [activeCategoryId, setActiveCategoryId] = useState("");
 
@@ -17,7 +16,6 @@ const AllJewelry = () => {
     setJewelries(allJewelry);
   }, [loading]);
 
-  console.log("✌️jewelries --->", jewelries);
 
   if (loading || ctLoading) {
     return (

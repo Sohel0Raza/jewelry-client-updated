@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import AddCategory from "./AddCategory";
 import Title from "../../components/Title";
 import useCategory from "../../hooks/useCategory";
 import useAllJewelry from "../../hooks/useAllJewelry";
@@ -10,9 +9,8 @@ import useAllJewelry from "../../hooks/useAllJewelry";
 const AddJewelry = () => {
   const { user } = useContext(AuthContext);
   const [categories] = useCategory();
-  const [,loading, refetch] = useAllJewelry();
+  const [,, refetch] = useAllJewelry();
   const navigate = useNavigate();
-  const from = "/allJewelry";
 
   const MaterialEnum = {
     Gold24K: "Gold 24K",
@@ -51,7 +49,7 @@ const AddJewelry = () => {
       description,
     };
 
-    fetch("http://localhost:5000/api/jewelrys", {
+    fetch("https://jewelry-shop-server-main.vercel.app/api/jewelrys", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -67,6 +65,7 @@ const AddJewelry = () => {
             icon: "success",
             confirmButtonText: "OK",
           });
+          form.reset()
         } else {
           Swal.fire({
             icon: "error",
@@ -74,9 +73,6 @@ const AddJewelry = () => {
             text: `${data.message}`,
           });
         }
-        loading
-        refetch();
-        navigate(from, { replace: true });
       })
       .catch((error) => {
         form.reset();
@@ -284,7 +280,6 @@ const AddJewelry = () => {
           </form>
         </div>
       </div>
-      <AddCategory></AddCategory>
     </div>
   );
 };

@@ -9,7 +9,7 @@ const useAllJewelry = () => {
         queryKey: ["allJewelry"],
         queryFn: async () => {
             const res = await fetch(
-                "http://localhost:5000/api/jewelrys"
+                "https://jewelry-shop-server-main.vercel.app/api/jewelrys"
             );
             return res.json();
         },

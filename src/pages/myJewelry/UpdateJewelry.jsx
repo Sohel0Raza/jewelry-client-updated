@@ -4,13 +4,11 @@ import Title from "../../components/Title";
 
 const UpdateJewelry = () => {
   const jewelry = useLoaderData()
-console.log('✌️jewelry --->', jewelry);
 
   const navigate = useNavigate();
   const from = "/myJewelry";
 
   const { _id, name, price, weight, description } = jewelry;
-console.log('✌️name --->', name);
 
   const handleUpdateJewelry = (event) => {
     event.preventDefault();
@@ -22,7 +20,7 @@ console.log('✌️name --->', name);
     const updatedJewelry = { name, price, weight, description };
 
     fetch(
-      `http://localhost:5000/api/jewelrys/${_id}`,
+      `https://jewelry-shop-server-main.vercel.app/api/jewelrys/${_id}`,
       {
         method: "PUT",
         headers: {
